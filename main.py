@@ -8,6 +8,7 @@ logging.basicConfig(datefmt='%H:%M:%S',
                     level=logging.DEBUG)
 
 
+
 app = Flask(__name__)
 metrics = PrometheusMetrics(app)
 @app.route('/propositionUnitizer-01', methods = ['GET', 'POST'])
@@ -19,8 +20,8 @@ metrics = PrometheusMetrics(app)
 def propositionalizer_defult():
 	if request.method == 'POST':
 		file_obj = request.files['file']
-		propositionaliser = Propositionalizer()
-		result=propositionaliser.propositionalizer_default(file_obj)
+		propositionaliser = Propositionalizer(file_obj)
+		result=propositionaliser.propositionalizer_default()
 		return result
 	if request.method == 'GET':
 		info = """PropositionUnitizer is an AMF component that performs preprocessing steps on propositions. 
