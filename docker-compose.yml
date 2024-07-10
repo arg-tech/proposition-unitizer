@@ -2,6 +2,7 @@ version: '3'
 
 services:
   dam:
+    container_name: Default_propositionUnitiser
     build: .
     ports:
       - "5004:5004"
