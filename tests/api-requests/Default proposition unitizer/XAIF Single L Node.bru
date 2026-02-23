@@ -1,0 +1,87 @@
+meta {
+  name: XAIF Single L Node
+  type: http
+  seq: 1
+}
+
+post {
+  url: {{baseUrl}}/propositionUnitizer-01
+  body: multipartForm
+  auth: inherit
+}
+
+headers {
+  Content-Type: multipart/form-data
+}
+
+body:multipart-form {
+  file: @file(test-inputs/xaif_single_l_node.json)
+}
+
+tests {
+  const expectedData =
+  {
+    "AIF": {
+      "descriptorfulfillments": null,
+      "edges": [
+        {
+          "edgeID": 0,
+          "fromID": 0,
+          "toID": 2
+        },
+        {
+          "edgeID": 1,
+          "fromID": 2,
+          "toID": 1
+        }
+      ],
+      "locutions": [
+        {
+          "nodeID": 0,
+          "personID": 0
+        }
+      ],
+      "nodes": [
+        {
+          "nodeID": 0,
+          "text": "We should invest more in renewable energy.",
+          "type": "L"
+        },
+        {
+          "nodeID": 1,
+          "text": "We should invest more in renewable energy.",
+          "type": "I"
+        },
+        {
+          "nodeID": 2,
+          "text": "Default Illocuting",
+          "type": "YA"
+        }
+      ],
+      "participants": [
+        {
+          "firstname": "Default",
+          "participantID": 0,
+          "surname": "Speaker"
+        }
+      ],
+      "schemefulfillments": null
+    },
+    "dialog": false,
+    "ova": [],
+    "text": {
+      "txt": " Default Speaker <span class=\"highlighted\" id=\"0\">We should invest more in renewable energy.</span>.<br><br>"
+    }
+  };
+
+  const maxTimeToReturnInMilliseconds = 300;
+
+  test("Response should match expected value", function () {
+    const receivedData = res.getBody();
+    expect(receivedData).to.deep.equal(expectedData);
+  });
+
+  test(`Response time should be faster than ${maxTimeToReturnInMilliseconds} milliseconds`, function () {
+    expect(res.responseTime).to.be.below(maxTimeToReturnInMilliseconds);
+  });
+}

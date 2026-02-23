@@ -1,0 +1,121 @@
+meta {
+  name: XAIF Dialog
+  type: http
+  seq: 2
+}
+
+post {
+  url: {{baseUrl}}/propositionUnitizer-01
+  body: multipartForm
+  auth: inherit
+}
+
+headers {
+  Content-Type: multipart/form-data
+}
+
+body:multipart-form {
+  file: @file(test-inputs/xaif_dialog.json)
+}
+
+tests {
+  const expectedData =
+  {
+    "AIF": {
+      "descriptorfulfillments": null,
+      "edges": [
+        {
+          "edgeID": 0,
+          "fromID": 0,
+          "toID": 3
+        },
+        {
+          "edgeID": 1,
+          "fromID": 3,
+          "toID": 2
+        },
+        {
+          "edgeID": 2,
+          "fromID": 1,
+          "toID": 5
+        },
+        {
+          "edgeID": 3,
+          "fromID": 5,
+          "toID": 4
+        }
+      ],
+      "locutions": [
+        {
+          "nodeID": 0,
+          "personID": 0
+        },
+        {
+          "nodeID": 1,
+          "personID": 1
+        }
+      ],
+      "nodes": [
+        {
+          "nodeID": 0,
+          "text": "disagreements between party members are entirely to be expected.",
+          "type": "L"
+        },
+        {
+          "nodeID": 1,
+          "text": "the SNP has disagreements.",
+          "type": "L"
+        },
+        {
+          "nodeID": 2,
+          "text": "disagreements between party members are entirely to be expected.",
+          "type": "I"
+        },
+        {
+          "nodeID": 3,
+          "text": "Default Illocuting",
+          "type": "YA"
+        },
+        {
+          "nodeID": 4,
+          "text": "the SNP has disagreements.",
+          "type": "I"
+        },
+        {
+          "nodeID": 5,
+          "text": "Default Illocuting",
+          "type": "YA"
+        }
+      ],
+      "participants": [
+        {
+          "firstname": "Speaker",
+          "participantID": 0,
+          "surname": "1"
+        },
+        {
+          "firstname": "Speaker",
+          "participantID": 1,
+          "surname": "2"
+        }
+      ],
+      "schemefulfillments": null
+    },
+    "dialog": true,
+    "ova": [],
+    "text": {
+      "txt": " Speaker 1 <span class=\"highlighted\" id=\"0\">disagreements between party members are entirely to be expected.</span>.<br><br> Speaker 2 <span class=\"highlighted\" id=\"1\">the SNP has disagreements.</span>.<br><br>"
+    }
+  };
+
+  const maxTimeToReturnInMilliseconds = 300;
+
+  test("Response should match expected value", function () {
+    const receivedData = res.getBody();
+    expect(receivedData).to.deep.equal(expectedData);
+  });
+
+  test(`Response time should be faster than ${maxTimeToReturnInMilliseconds} milliseconds`, function () {
+    expect(res.responseTime).to.be.below(maxTimeToReturnInMilliseconds);
+  });
+}
