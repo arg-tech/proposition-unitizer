@@ -1,0 +1,136 @@
+meta {
+  name: XAIF Duplicate Texts
+  type: http
+  seq: 3
+}
+
+post {
+  url: {{baseUrl}}/propositionUnitizer-01
+  body: multipartForm
+  auth: inherit
+}
+
+headers {
+  Content-Type: multipart/form-data
+}
+
+body:multipart-form {
+  file: @file(test-inputs/xaif_duplicate_texts.json)
+}
+
+tests {
+  const expectedData =
+  {
+    "AIF": {
+      "descriptorfulfillments": null,
+      "edges": [
+        {
+          "edgeID": 0,
+          "fromID": 0,
+          "toID": 4
+        },
+        {
+          "edgeID": 1,
+          "fromID": 4,
+          "toID": 3
+        },
+        {
+          "edgeID": 2,
+          "fromID": 1,
+          "toID": 6
+        },
+        {
+          "edgeID": 3,
+          "fromID": 6,
+          "toID": 5
+        }
+      ],
+      "locutions": [
+        {
+          "nodeID": 0,
+          "personID": 0
+        },
+        {
+          "nodeID": 1,
+          "personID": 1
+        },
+        {
+          "nodeID": 2,
+          "personID": 0
+        }
+      ],
+      "nodes": [
+        {
+          "nodeID": 0,
+          "text": "We need to act on climate change.",
+          "type": "L"
+        },
+        {
+          "nodeID": 1,
+          "text": "I disagree with that.",
+          "type": "L"
+        },
+        {
+          "nodeID": 2,
+          "text": "We need to act on climate change.",
+          "type": "L"
+        },
+        {
+          "nodeID": 3,
+          "text": "We need to act on climate change.",
+          "type": "I"
+        },
+        {
+          "nodeID": 4,
+          "text": "Default Illocuting",
+          "type": "YA"
+        },
+        {
+          "nodeID": 5,
+          "text": "I disagree with that.",
+          "type": "I"
+        },
+        {
+          "nodeID": 6,
+          "text": "Default Illocuting",
+          "type": "YA"
+        }
+      ],
+      "participants": [
+        {
+          "firstname": "Speaker",
+          "participantID": 0,
+          "surname": "1"
+        },
+        {
+          "firstname": "Speaker",
+          "participantID": 1,
+          "surname": "2"
+        }
+      ],
+      "schemefulfillments": null
+    },
+    "dialog": true,
+    "ova": [],
+    "text": {
+      "txt": " Speaker 1 <span class=\"highlighted\" id=\"0\">We need to act on climate change.</span>.<br><br> Speaker 2 <span class=\"highlighted\" id=\"1\">I disagree with that.</span>.<br><br> Speaker 1 <span class=\"highlighted\" id=\"2\">We need to act on climate change.</span>.<br><br>"
+    }
+  };
+
+  const maxTimeToReturnInMilliseconds = 300;
+
+  test("Response should match expected value", function () {
+    const receivedData = res.getBody();
+    expect(receivedData).to.deep.equal(expectedData);
+  });
+
+  test("Duplicate L-node text should produce only one I node per unique text", function () {
+    const nodes = res.getBody().AIF.nodes;
+    const iNodes = nodes.filter(n => n.type === "I");
+    expect(iNodes).to.have.lengthOf(2);
+  });
+
+  test(`Response time should be faster than ${maxTimeToReturnInMilliseconds} milliseconds`, function () {
+    expect(res.responseTime).to.be.below(maxTimeToReturnInMilliseconds);
+  });
+}
