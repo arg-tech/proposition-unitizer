@@ -1,0 +1,9 @@
+{
+  "version": "1",
+  "name": "Default proposition unitizer",
+  "type": "collection",
+  "ignore": [
+    "node_modules",
+    ".git"
+  ]
+}

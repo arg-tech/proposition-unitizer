@@ -1,0 +1,25 @@
+meta {
+  name: GET Info
+  type: http
+  seq: 5
+}
+
+get {
+  url: {{baseUrl}}/propositionUnitizer-01
+  body: none
+  auth: inherit
+}
+
+tests {
+
+  test("Response status should be 200", function () {
+    expect(res.status).to.equal(200);
+  });
+
+  test("Response should contain component description", function () {
+    const body = res.getBody();
+    expect(body).to.contain("PropositionUnitizer");
+    expect(body).to.contain("'I' nodes");
+    expect(body).to.contain("'L' node");
+  });
+}

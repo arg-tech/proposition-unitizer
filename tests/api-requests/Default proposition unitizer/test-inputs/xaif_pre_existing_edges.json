@@ -1,0 +1,26 @@
+{
+  "AIF": {
+    "descriptorfulfillments": null,
+    "edges": [
+      {"edgeID": 10, "fromID": 0, "toID": 1}
+    ],
+    "locutions": [
+      {"nodeID": 0, "personID": 0},
+      {"nodeID": 1, "personID": 1}
+    ],
+    "nodes": [
+      {"nodeID": 0, "text": "Education spending should increase.", "type": "L"},
+      {"nodeID": 1, "text": "Healthcare is more urgent.", "type": "L"}
+    ],
+    "participants": [
+      {"firstname": "Speaker", "participantID": 0, "surname": "1"},
+      {"firstname": "Speaker", "participantID": 1, "surname": "2"}
+    ],
+    "schemefulfillments": null
+  },
+  "dialog": true,
+  "ova": [],
+  "text": {
+    "txt": " Speaker 1 <span class=\"highlighted\" id=\"0\">Education spending should increase.</span>.<br><br> Speaker 2 <span class=\"highlighted\" id=\"1\">Healthcare is more urgent.</span>.<br><br>"
+  }
+}
